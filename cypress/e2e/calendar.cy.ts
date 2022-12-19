@@ -20,7 +20,7 @@ describe("Calendar", () => {
       cy.get('[data-cy="factText"]').should("have.text", expectedFact);
     });
   });
-  
+
   it("displays an error message when there is an error retrieving the fact", () => {
     cy.get(".react-datepicker__input-container input").click();
     // Intercept the request to numbersapi.com

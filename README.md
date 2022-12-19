@@ -15,7 +15,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 To launch E2E tests in interactive GUI from cypress
 
-
 ### `npm run prettier` or `yarn run prettier`
 
 Fixes the code formatting
