@@ -10,7 +10,8 @@ export const StyledDatePickerContainer = styled.div`
     width: 100% !important;
   }
 
-  .react-datepicker__day--selected, .react-datepicker__day:hover {
+  .react-datepicker__day--selected,
+  .react-datepicker__day:hover {
     border-radius: 1rem;
   }
 
