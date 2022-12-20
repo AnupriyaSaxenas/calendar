@@ -23,16 +23,19 @@ export const StyledDatePickerContainer = styled.div`
   }
 `;
 
-export const StyledErrorMessage = styled.div`
-  color: #b80003;
-  padding: 1rem 0;
-`;
-
-export const StyledFact = styled.div`
+export const StyledText = styled.div`
+  color: #424242;
+  padding-top: 1rem;
   width: 30%;
   margin: 0 auto;
-  color: #424242;
-  padding: 1rem 0;
+
+  &[data-cy="factError"] {
+    color: #b80003;
+  }
+
+  &[data-cy="factSaveSuccess"] {
+    color: #00712e;
+  }
 `;
 
 export {};

@@ -1,5 +1,5 @@
 import { Route, Routes, Navigate } from "react-router-dom";
-import Calendar from "./components/calendar.tsx";
+import Calendar from "./components/Calendar/calendar.tsx";
 import PageNotFound from "./pageNotFound.tsx"; // Import the "page not found" component
 import "./App.css";
 
