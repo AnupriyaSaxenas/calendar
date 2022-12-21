@@ -9,7 +9,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Navigate to="/calendar" />} />
-          <Route path="calendar" element={<Calendar startDate={new Date()} />} />
+          <Route path="/calendar" element={<Calendar startDate={new Date()} />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </div>

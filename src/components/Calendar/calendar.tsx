@@ -6,20 +6,24 @@ import { StyledDatePickerContainer, StyledText } from "./calendarStyles";
 import Favorites from "../Favorites/favorites";
 import { StyledButtonContainer } from "../commonStyles";
 
+type Messages = string | undefined | null;
+
 interface Props {
   startDate: Date;
 }
 
-type Messages = string | undefined | null;
-
+// #region Component
 const Calendar: FunctionComponent<Props> = ({ startDate }) => {
+  // #region State variables
   const [selectedDate, setSelectedDate] = useState<Date>(startDate);
   const [factData, setFactData] = useState<Messages>();
   const [errorMessage, setErrorMessage] = useState<Messages>();
   const [favoriteFacts, setFavoriteFacts] = useState<string[]>([]);
   const [isFavoritesListOpen, setIsFavoritesListOpen] = useState(false);
   const [saveSuccessMessage, setSaveSuccessMessage] = useState<Messages>();
+  // #endregion
 
+  // #region Functions
   const fetchFact = async (month: number, day: number): Promise<void> => {
     try {
       const endpoint = `http://numbersapi.com/${month}/${day}/date`;
@@ -44,18 +48,16 @@ const Calendar: FunctionComponent<Props> = ({ startDate }) => {
     };
   };
 
+  // To handle changes on selecting date
   const onDateChange = (date: Date): void => {
-    if (date === selectedDate) {
-      return;
-    }
     setSelectedDate(date);
     setFactData(null);
-
     const month: number = date.getMonth() + 1;
     const day: number = date.getDate();
     fetchFact(month, day);
   };
 
+  // To save the fact, update local storage and set success and error messages
   const handleSaveFact = (): void => {
     if ((factData && favoriteFacts.includes(factData)) || !factData) {
       setErrorMessage("Could not save the fact as the fact already exists or no fact is present.");
@@ -73,6 +75,7 @@ const Calendar: FunctionComponent<Props> = ({ startDate }) => {
     }, 2000);
   };
 
+  // To persist the list on page refresh
   useEffect(() => {
     const storedFavoriteFacts = localStorage.getItem("favoriteFacts");
     if (storedFavoriteFacts) {
@@ -86,7 +89,9 @@ const Calendar: FunctionComponent<Props> = ({ startDate }) => {
     localStorage.setItem("favoriteFacts", JSON.stringify([]));
     setFavoriteFacts([]);
   };
+  // #endregion
 
+  // #region DOM
   return (
     <>
       {isFavoritesListOpen ? (
@@ -113,6 +118,8 @@ const Calendar: FunctionComponent<Props> = ({ startDate }) => {
       )}
     </>
   );
+  // #endregion
 };
 
 export default Calendar;
+// #endregion
