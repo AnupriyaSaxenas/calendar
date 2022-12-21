@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import { StyledDatePickerContainer, StyledText } from "./calendarStyles";
 import Favorites from "../Favorites/favorites";
@@ -10,29 +10,31 @@ interface Props {
   startDate: Date;
 }
 
+type Messages = string | undefined | null;
+
 const Calendar: FunctionComponent<Props> = ({ startDate }) => {
   const [selectedDate, setSelectedDate] = useState<Date>(startDate);
-  const [factData, setFactData] = useState<string | undefined>();
-  const [errorMessage, setErrorMessage] = useState<string | undefined>();
+  const [factData, setFactData] = useState<Messages>();
+  const [errorMessage, setErrorMessage] = useState<Messages>();
   const [favoriteFacts, setFavoriteFacts] = useState<string[]>([]);
   const [isFavoritesListOpen, setIsFavoritesListOpen] = useState(false);
-  const [saveSuccessMessage, setSaveSuccessMessage] = useState<string | undefined>();
+  const [saveSuccessMessage, setSaveSuccessMessage] = useState<Messages>();
 
-  async function fetchFact(month: number, day: number) {
+  const fetchFact = async (month: number, day: number): Promise<void> => {
     try {
       const endpoint = `http://numbersapi.com/${month}/${day}/date`;
-      const response = await axios.get(endpoint);
-      setErrorMessage(undefined);
+      const response: AxiosResponse<string> = await axios.get(endpoint);
+      setErrorMessage(null);
       setFactData(response.data.toString());
     } catch (error) {
       const ErrorMessage: string = "There was an error retrieving the fact. Please try again later.";
       setErrorMessage(ErrorMessage);
-      setFactData(undefined);
+      setFactData(null);
       throw new Error(ErrorMessage);
     }
-  }
+  };
 
-  function debounce(fn: (date: Date) => void, delay: number) {
+  const debounce = (fn: (date: Date) => void, delay: number): ((date: Date) => void) => {
     let timeoutId: NodeJS.Timeout;
     return function (date: Date) {
       clearTimeout(timeoutId);
@@ -40,25 +42,25 @@ const Calendar: FunctionComponent<Props> = ({ startDate }) => {
         fn(date);
       }, delay);
     };
-  }
+  };
 
-  function onDateChange(date: Date) {
+  const onDateChange = (date: Date): void => {
     if (date === selectedDate) {
       return;
     }
     setSelectedDate(date);
-    setFactData(undefined);
+    setFactData(null);
 
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
+    const month: number = date.getMonth() + 1;
+    const day: number = date.getDate();
     fetchFact(month, day);
-  }
+  };
 
-  function handleSaveFact() {
+  const handleSaveFact = (): void => {
     if ((factData && favoriteFacts.includes(factData)) || !factData) {
       setErrorMessage("Could not save the fact as the fact already exists or no fact is present.");
       setTimeout(() => {
-        setErrorMessage(undefined);
+        setErrorMessage(null);
       }, 2000);
       return;
     }
@@ -67,9 +69,9 @@ const Calendar: FunctionComponent<Props> = ({ startDate }) => {
     localStorage.setItem("favoriteFacts", JSON.stringify(updatedFavoriteFacts));
     setSaveSuccessMessage("Saved successfully!");
     setTimeout(() => {
-      setSaveSuccessMessage(undefined);
+      setSaveSuccessMessage(null);
     }, 2000);
-  }
+  };
 
   useEffect(() => {
     const storedFavoriteFacts = localStorage.getItem("favoriteFacts");
@@ -80,10 +82,10 @@ const Calendar: FunctionComponent<Props> = ({ startDate }) => {
 
   const closeFavoritesList = () => setIsFavoritesListOpen(false);
 
-  function handleClearFavorites() {
+  const handleClearFavorites = (): void => {
     localStorage.setItem("favoriteFacts", JSON.stringify([]));
     setFavoriteFacts([]);
-  }
+  };
 
   return (
     <>
