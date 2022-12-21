@@ -83,8 +83,10 @@ const Calendar: FunctionComponent<Props> = ({ startDate }) => {
     }
   }, []);
 
+  // Takes us back to calendar
   const closeFavoritesList = () => setIsFavoritesListOpen(false);
 
+  // Removes all the currently saved favorites
   const handleClearFavorites = (): void => {
     localStorage.setItem("favoriteFacts", JSON.stringify([]));
     setFavoriteFacts([]);
