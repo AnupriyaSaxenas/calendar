@@ -25,7 +25,7 @@ const Calendar: FunctionComponent<Props> = ({ startDate }) => {
       const endpoint = `http://numbersapi.com/${month}/${day}/date`;
       const response: AxiosResponse<string> = await axios.get(endpoint);
       setErrorMessage(null);
-      setFactData(response.data.toString());
+      setFactData(response.data);
     } catch (error) {
       const ErrorMessage: string = "There was an error retrieving the fact. Please try again later.";
       setErrorMessage(ErrorMessage);
